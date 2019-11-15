@@ -1,6 +1,8 @@
 //packages
 const express = require("express");
 const bodyParser = require("body-parser");
+const db = require("./models/index.js");
+
 //starting express
 const app = express();
 
@@ -36,7 +38,10 @@ app.delete("/delete/:index", function(req, res) {
   res.json(list);
 });
 
-//server listening for request
-app.listen(3000, function() {
-  console.log("Server is Live!!!");
+db.sequelize.sync().then(function() {
+  //server listening for request
+  app.listen(3000, function(err) {
+    if (err) console.log(err);
+    console.log("Server is Live!!!");
+  });
 });
